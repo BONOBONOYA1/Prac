@@ -1,0 +1,18 @@
+스피링한테는 클라이언트한테 받는 3가지 방식이 있다. 
+@PathVariable = url뒤에 들어오는 데이터들의 위치를 통해서 객체의 위치와 똑같이 써줌으로서 Mapping을 시켜준다. 변수 데이터가 하나면 사용
+@RequestBody= 빈도수 1등 주로 객체를 받는다. json으로 변환해준다. Dto와 연결해서 쓴다.  변수 3개 이상이면 사용
+@RequestParam=  @RequestParam String 변수 로 써준다.     변수 3개까지 사용
+
+@GetMapping = 
+
+get : 클라이언트가 데이터를 요청해서 필요한 데이터를 받는 동작 @GetMapping
+post : 클라이언트가 데이터를 보내서 데이터를 저장하는 동작 @PostMapping
+put : 클라이언트가 데이터를 보내서 업데이트하는 동작 @PutMapping
+delete : 클라이언트가 데이터를 보내서 삭제하는 동작 @DeleteMapping
+fetch : 클라이언트가 데이터를 보내서 업데이트하는 동작 @FetchMapping
+
+@Transactional = Transactional의 안정성을 보장해주는 어노테이션.안정성을 보장해주는 4가지 법칙.ACID(줄임말)가 깨지지않게 해줌. 
+
+@Column(nullable = false) = @Column은 DB에 저장 //nullable = false은 빈칸을 허용하지 않겠다.
+
+import javax.persistence.*; 자바에서 제공하는 기본적인 라이브러리 코드
