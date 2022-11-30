@@ -1,6 +1,7 @@
 package com.sparta.hanghaememo.controller;
 
 import com.sparta.hanghaememo.dto.MemoRequestDto;
+import com.sparta.hanghaememo.dto.MemoResponseDto;
 import com.sparta.hanghaememo.entity.Memo;
 import com.sparta.hanghaememo.service.MemoService;
 import lombok.RequiredArgsConstructor;
@@ -12,16 +13,16 @@ import java.util.List;
 @RestController //@Controller에 @ResponseBody가 결합된 어노테이션입니다. @ResponseBody 리턴 타입이 HTTP의 응답 메시지로 전송
                             //컨트롤러 클래스에 @RestController를 붙이면,
                              //컨트롤러 클래스 하위 메서드에 @ResponseBody 어노테이션을 붙이지 않아도 문자열과 JSON 등을 전송할 수 있습니다.
+
 @RequiredArgsConstructor //@RequiredArgsConstructor는 final 혹은 @NotNull이 붙은 필드의 생성자를 자동으로 만들어준다.
                                             // 이를 통해 새로운 필드를 추가할 때 다시 생성자를 만들거나 하는 등의 번거로움을 없앨 수 있다.
                                             //하지만 자동적으로 생성자가 만들어지기 때문에 내가 예상하지 못한 결과나 오류가 발생할 수 있기 때문에 그런 점도 염두해둬야 한다.
                                             // @RequiredArgsConstructor 어노테이션을 사용하면 간단한 방법으로 생성자 주입을 해줄 수 있다.
 
 public class MemoController {
-
         private final MemoService memoService;
 
-        @GetMapping("/")  //질문
+        @GetMapping("/")  //클라이언트가 데이터를 요청해서 필요한 데이터를 받는 동작 @GetMapping
         public ModelAndView home() { //ModelAndView =데이터와 이동하고자 하는 View Page를 같이 저장한다
             return new ModelAndView("index"); //templates에 반환할 html파일 이름을 명시해주면 index.html을 반환해준다.
         }
@@ -38,13 +39,18 @@ public class MemoController {
                 return memoService.getMemos(); //memoService에 연결을 해서 getMemos()연결하는 메서드를 만들어야함 getMemos빨간줄 누르면 service로 넘어가서 자동생성됨.
         }
 
+        @GetMapping("/api/post/{id}")  // 선택한 게시글 조회
+        public MemoResponseDto getPost(@PathVariable Long id) { //@PathVariable => {id}에 들어오는 값을 Long id에 담아줌 (받을데이터가 1개일때),  url뒤에 들어오는 데이터들의 위치를 통해서 객체의 위치와 똑같이 써줌으로서 Mapping을 시켜준다.
+                return memoService.getPost(id);
+        }
+
         @PutMapping("/api/memos/{id}") //index파일 submitEdit()에서 "PUT"방식 "/api/memos"을 가져온 것임.{id}추가 입력
-        public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {
-                return memoService.update(id, requestDto);  //memoService에 연결을 해서 update()연결하는 메서드를 만들어야함.
+        public MemoResponseDto updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {  //@requestBody => json 형식 (받을 데이터가 여러개일때)
+                return memoService.updateMemo(id, requestDto);  //memoService에 연결을 해서 update()연결하는 메서드를 만들어야함.
         }
 
         @DeleteMapping("/api/memos/{id}")  //index파일 deleteOne()에서 "DELETE"방식 "/api/memos"을 가져온 것임.{id}추가 입력
-        public Long deleteMemo(@PathVariable Long id) {
+        public Long deleteMemo(@PathVariable Long id) {  //위와 같은 방식으로 service 자바클래스로 가서 만들어준다.
                 return memoService.deleteMemo(id);
         }
 }
