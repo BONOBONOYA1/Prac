@@ -14,7 +14,7 @@ import java.util.List;
 @Service //Service라는 것을 알려주기 위해 작성
 @RequiredArgsConstructor //controller 자바클래스에 설명있음.
 public class MemoService {
-        private static final MemoRepository memoRepository = null; //MemoRepository를 사용할 수 있도록 작성. MemoRepository에 연결됨.
+        private final MemoRepository memoRepository; //MemoRepository를 사용할 수 있도록 작성. MemoRepository에 연결됨.
 
     @Transactional(readOnly = true)
     public MemoResponseDto getPost(Long id) {
@@ -32,9 +32,9 @@ public class MemoService {
         return memo;
     }
 
-    @Transactional(readOnly = true) //읽기코드
+    @Transactional(readOnly = true) //전체 글 읽기코드
     public List<Memo> getMemos() {
-       return memoRepository.findAllByOrderByModifiedAtDesc(); //findAll을 하면 해당 테이블에 있는 모든걸 가져와야 하니까 update를 해야된다. memoRepository요게 인터페이스 repository인가?
+       return memoRepository.findAllByOrderByCreatedAtDesc();          //findAll을 하면 해당 테이블에 있는 모든걸 가져와야 하니까 update를 해야된다. memoRepository요게 인터페이스 repository인가?
                                                                                                             //memoRopository에서 findAllByOrderByModifiedAtDesc 코드 작성 후 service자바 클래스로 와서 findAll을 findAllByOrderByModifiedAtDesc로 바꿔줌
    }
    @Transactional
@@ -48,9 +48,13 @@ public class MemoService {
    }
 
    @Transactional
-    public Long deleteMemo(Long id) {
-       memoRepository.deleteById(id);
-       return id;
-    }
+   public boolean deleteMemo(Long id, String password) {
+       if(memoRepository.existsByIdAndPassword(id, password)) {
+           memoRepository.deleteById(id);
+           return true;
+
+       }
+       return false;
+   }
 
 }
