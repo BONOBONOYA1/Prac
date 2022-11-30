@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface MemoRepository extends JpaRepository<Memo, Long>{
-    List<Memo> findAllByOrderByModifiedAtDesc(); //수정된 시간이 가장 최근인 순서대로 가지고오게 하는 코드, Desc = 내림차순 코드
+    List<Memo> findAllByOrderByCreatedAtDesc();//수정된 시간이 가장 최근인 순서대로 가지고오게 하는 코드, Desc = 내림차순 코드
 
 
     Optional<Memo> findByIdAndPassword(Long id, String password);
