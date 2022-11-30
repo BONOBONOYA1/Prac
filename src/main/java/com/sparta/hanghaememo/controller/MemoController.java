@@ -1,5 +1,7 @@
 package com.sparta.hanghaememo.controller;
 
+import com.sparta.hanghaememo.dto.MemoDeleteRequestDto;
+import com.sparta.hanghaememo.dto.MemoDeleteResponseDto;
 import com.sparta.hanghaememo.dto.MemoRequestDto;
 import com.sparta.hanghaememo.dto.MemoResponseDto;
 import com.sparta.hanghaememo.entity.Memo;
@@ -27,14 +29,14 @@ public class MemoController {
             return new ModelAndView("index"); //templates에 반환할 html파일 이름을 명시해주면 index.html을 반환해준다.
         }
 
-        @PostMapping("/api/memos") // index파일 writePost에서 Post 방식 url "/api/memos" 부분을 받는 서버부분을 개발
+        @PostMapping("/api/post") // index파일 writePost에서 Post 방식 url "/api/memos" 부분을 받는 서버부분을 개발
         public Memo createMemo(@RequestBody MemoRequestDto requestDto) {  //Memo를 바로 반환할 것이기에 Memo라고 해줍니다.
                                                                                                                                     // 객체 형식으로 넘어오기 때문에@RequestBody를 사용
                                                                                                                                     //Post 방식이기 때문에 body가 존재하고 우리가 원하는 저장해야 되는 것들이 넘어오기 때문에 @RequestBody를 사용할 것이고, MemoRequestDto를 객체로 받을 것이다.
                 return memoService.createMemo(requestDto); //memoService의 creatMemo라는 연결되는 부분을 method로 만들어주고  parameter값으로  클라이언트에서 가져 온 requestDto 안에 들어있는 값들을 사용해야 돼서 만들고 createMemo함수를 만들러 간다.memoService로 고고
         }
 
-        @GetMapping("api/memos") //index파일 getMessages()에서 "GET"방식 "/api/memos"을 가져온 것임.
+        @GetMapping("api/posts") //index파일 getMessages()에서 "GET"방식 "/api/memos"을 가져온 것임.
         public List<Memo> getMemos() { //List형식으로 반환타입 해줌, Client에서 전달해주는 데이터가 없기에 parameter는 넣을 필요가 없다.
                 return memoService.getMemos(); //memoService에 연결을 해서 getMemos()연결하는 메서드를 만들어야함 getMemos빨간줄 누르면 service로 넘어가서 자동생성됨.
         }
@@ -44,13 +46,14 @@ public class MemoController {
                 return memoService.getPost(id);
         }
 
-        @PutMapping("/api/memos/{id}") //index파일 submitEdit()에서 "PUT"방식 "/api/memos"을 가져온 것임.{id}추가 입력
+        @PutMapping("/api/post/{id}") //index파일 submitEdit()에서 "PUT"방식 "/api/memos"을 가져온 것임.{id}추가 입력
         public MemoResponseDto updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {  //@requestBody => json 형식 (받을 데이터가 여러개일때)
                 return memoService.updateMemo(id, requestDto);  //memoService에 연결을 해서 update()연결하는 메서드를 만들어야함.
         }
 
-        @DeleteMapping("/api/memos/{id}")  //index파일 deleteOne()에서 "DELETE"방식 "/api/memos"을 가져온 것임.{id}추가 입력
-        public Long deleteMemo(@PathVariable Long id) {  //위와 같은 방식으로 service 자바클래스로 가서 만들어준다.
-                return memoService.deleteMemo(id);
+        @DeleteMapping("/api/post/{id}")  //index파일 deleteOne()에서 "DELETE"방식 "/api/memos"을 가져온 것임.{id}추가 입력
+        public MemoDeleteResponseDto deleteMemo(@PathVariable Long id, @RequestBody MemoDeleteRequestDto requestDto) {  //위와 같은 방식으로 service 자바클래스로 가서 만들어준다.
+               boolean deleteResult = memoService.deleteMemo(id, requestDto.getPassword());
+               return new MemoDeleteResponseDto(deleteResult);
         }
 }
