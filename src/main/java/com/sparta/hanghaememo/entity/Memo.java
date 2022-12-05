@@ -23,7 +23,7 @@ public class Memo extends Timestamped {
     @Column(nullable = false)  //@Column은 DB에 저장 //nullable = false은 빈칸을 허용하지 않겠다.
     private String username;
 
-    @Column(nullable = false)  //
+    @Column(nullable = false)
     private String contents;
 
     @Column(nullable = false)

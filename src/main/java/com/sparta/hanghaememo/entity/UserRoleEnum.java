@@ -1,2 +1,6 @@
-package com.sparta.hanghaememo.entity;public class UserRoleEnum {
+package com.sparta.hanghaememo.entity;
+
+public enum UserRoleEnum {
+    USER,  // 사용자 권한
+    ADMIN  // 관리자 권한
 }
