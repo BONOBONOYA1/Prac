@@ -1,6 +1,5 @@
 package com.sparta.hanghaememo.Jwt;
 
-import com.sparta.hanghaememo.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
@@ -47,7 +46,7 @@ public class JwtUtil { //토큰 생성에 필요한 값
     }
 
     // 토큰 생성, JWT생성
-    public String createToken(String username, UserRoleEnum role) {
+    public String createToken(String username) {
         Date date = new Date();
 
         return BEARER_PREFIX +

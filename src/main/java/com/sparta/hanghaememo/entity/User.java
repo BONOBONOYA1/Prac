@@ -25,18 +25,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
-    private String email;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING) //열거??, EnumType에는 총 두 가지 타입이 있다., EnumType.STRING : 각 Enum 이름을 컬럼에 저장한다. ex) G, PG, PG13.., EnumType.ORDINAL : 각 Enum에 대응되는 순서를 칼럼에 저장한다. ex) 0, 1, 2..
     private UserRoleEnum role;
 
-    public User(String username, String password, String email, UserRoleEnum role) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.email = email;
-        this.role = role;
     }
-
 }
