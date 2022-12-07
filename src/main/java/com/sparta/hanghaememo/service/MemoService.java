@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service //Service라는 것을 알려주기 위해 작성
@@ -65,8 +66,14 @@ public class MemoService {
 
 
     @Transactional(readOnly = true) //전체 글 읽기코드
-    public List<Memo> getMemos() {
-        return memoRepository.findAllByOrderByCreatedAtDesc();          //findAll을 하면 해당 테이블에 있는 모든걸 가져와야 하니까 update를 해야된다. memoRepository요게 인터페이스 repository인가?
+    public List<MemoResponseDto> getMemos() {
+        List<MemoResponseDto> memoResponseDtos = new ArrayList<>();//초기화
+
+        for (Memo memo: memoRepository.findAllByOrderByCreatedAtDesc()) {
+            memoResponseDtos.add( new MemoResponseDto(memo) );
+        };
+
+        return memoResponseDtos;         //findAll을 하면 해당 테이블에 있는 모든걸 가져와야 하니까 update를 해야된다. memoRepository요게 인터페이스 repository인가?
         //memoRopository에서 findAllByOrderByModifiedAtDesc 코드 작성 후 service자바 클래스로 와서 findAll을 findAllByOrderByModifiedAtDesc로 바꿔줌
     }
 
