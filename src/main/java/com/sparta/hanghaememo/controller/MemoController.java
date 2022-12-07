@@ -1,7 +1,6 @@
 package com.sparta.hanghaememo.controller;
 
 import com.sparta.hanghaememo.Jwt.JwtUtil;
-import com.sparta.hanghaememo.dto.MemoDeleteRequestDto;
 import com.sparta.hanghaememo.dto.MemoDeleteResponseDto;
 import com.sparta.hanghaememo.dto.MemoRequestDto;
 import com.sparta.hanghaememo.dto.MemoResponseDto;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController //@Controller에 @ResponseBody가 결합된 어노테이션입니다. @ResponseBody 리턴 타입이 HTTP의 응답 메시지로 전송
@@ -66,8 +66,14 @@ public class MemoController {
         }
 
         @DeleteMapping("/api/post/{id}")  //선택한 게시글 삭제, index파일 deleteOne()에서 "DELETE"방식 "/api/memos"을 가져온 것임.{id}추가 입력
-        public MemoDeleteResponseDto deleteMemo(@PathVariable Long id, @RequestBody MemoDeleteRequestDto requestDto) {  //위와 같은 방식으로 service 자바클래스로 가서 만들어준다.
-                memoService.deleteMemo(id, requestDto.getPassword());
-               return new MemoDeleteResponseDto("게시글 삭제 성공", "200");
+        public MemoDeleteResponseDto deleteMemo(@PathVariable Long id,  HttpServletRequest request) {  //위와 같은 방식으로 service 자바클래스로 가서 만들어준다.
+            return  memoService.deleteMemo(id, request);
+
         }
+
+//        @DeleteMapping("/api/post/{id}")  //선택한 게시글 삭제, index파일 deleteOne()에서 "DELETE"방식 "/api/memos"을 가져온 것임.{id}추가 입력
+//        public MemoDeleteResponseDto deleteMemo(@PathVariable Long id, @RequestBody MemoDeleteRequestDto requestDto) {  //위와 같은 방식으로 service 자바클래스로 가서 만들어준다.
+//                boolean deleteResult = memoService.deleteMemo(id, requestDto.getPassword());
+//                return new MemoDeleteResponseDto(deleteResult);
+//        }
 }

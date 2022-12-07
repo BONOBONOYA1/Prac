@@ -2,6 +2,7 @@ package com.sparta.hanghaememo.service;
 
 
 import com.sparta.hanghaememo.Jwt.JwtUtil;
+import com.sparta.hanghaememo.dto.MemoDeleteResponseDto;
 import com.sparta.hanghaememo.dto.MemoRequestDto;
 import com.sparta.hanghaememo.dto.MemoResponseDto;
 import com.sparta.hanghaememo.entity.Memo;
@@ -96,10 +97,8 @@ public class MemoService {
             }
             return new MemoResponseDto(memo);
         } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-
-
+            throw new IllegalArgumentException("Token Error");
+        }
 
 
 //
@@ -110,33 +109,48 @@ public class MemoService {
 //        memo.update(requestDto);//가지고 온 메모에 있는 값을 변경해줄 코드. update메소드를 사용해서 변경. 변경된 값은 client 에서 보내준 rquestDto안에 들어가 있는 값으로 수정한다.
 //        memoRepository.save(memo);
 //       return new MemoResponseDto(memo); //update코드가 memo자바 클래스 안에 안 만들어져 있기에 memo자바 클래스 안에 만들러 가야함.
-        }
+    }
 
-     @Transactional
-     public boolean deleteMemo(Long id, String password) { //선택한 게시글 삭제 API
+    @Transactional
+    public MemoDeleteResponseDto deleteMemo(Long id, HttpServletRequest request) { //선택한 게시글 삭제 API
         // Request에서 Token 가져오기
         String token = jwtUtil.resolveToken(request);
         Claims claims;
 
-    // 토큰이 있는 경우에만 관심상품 최저가 업데이트 가능
+        // 토큰이 있는 경우에만 관심상품 최저가 업데이트 가능
         if (token != null) {
-        // Token 검증
-        if (jwtUtil.validateToken(token)) {
-            // 토큰에서 사용자 정보 가져오기
-            claims = jwtUtil.getUserInfoFromToken(token);
+            // Token 검증
+            Memo memo = null;
+            if (jwtUtil.validateToken(token)) {
+                // 토큰에서 사용자 정보 가져오기
+                claims = jwtUtil.getUserInfoFromToken(token);
+                String username = claims.getSubject(); //토큰  안에 있는 username을 가져온 것.
+
+                memo = memoRepository.findById(id).orElseThrow(//memoRepository (memo Entity)DB에서 가져온다.
+                        () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
+                );
+                if (username.equals(memo.getUsername())) {
+                    //update 진행
+                    memoRepository.deleteById(id);//
+                } else {
+                    //에러 알람.
+                    throw new IllegalArgumentException("아이디가 다릅니다.");
+                }
+            }
+            return new MemoDeleteResponseDto("게시글 삭제 성공", 200);
+
         } else {
             throw new IllegalArgumentException("Token Error");
         }
 
-        // 토큰에서 가져온 사용자 정보를 사용하여 DB 조회
-        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-        );
-//       if(memoRepository.existsByIdAndPassword(id, password)) {
-//           memoRepository.deleteById(id);
-//           return true;
+//            @Transactional
+//            public boolean deleteMemo(Long id, String password) {
+//                if(memoRepository.existsByIdAndPassword(id, password)) {
+//                    memoRepository.deleteById(id);
+//                    return true;
 //
-//       }
-//       return false;
-//   }
+//                }
+//                return false;
+//            }
+    }
 }
