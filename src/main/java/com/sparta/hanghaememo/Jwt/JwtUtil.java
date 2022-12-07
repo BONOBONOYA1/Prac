@@ -52,7 +52,6 @@ public class JwtUtil { //토큰 생성에 필요한 값
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(username) //setSubject의 공간에는 username을 넣어줌
-                        .claim(AUTHORIZATION_KEY, role)
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME)) //setExpiration:이 토큰을 언제까지 유효하게 가져갈지, getTime:현재시간을 가져온다,
                         .setIssuedAt(date) //이 토큰이 언제 만들어 졌는지 넣어주는 부분
                         .signWith(key, signatureAlgorithm) //secretKey를 사용해서만든 key객체와 그 key객체를 어떤 알고리즘을 사용해서 암호화할 것인지 지정해주는 부분.

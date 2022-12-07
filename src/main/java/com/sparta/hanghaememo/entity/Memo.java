@@ -24,27 +24,26 @@ public class Memo extends Timestamped {
     private String username;
 
     @Column(nullable = false)
-    private String contents;
+    private String content;
 
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String password;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 
-    public Memo(MemoRequestDto requestDto) {
-        this.username = requestDto.getUsername();
-        this.contents = requestDto.getContents();
+
+    public Memo(MemoRequestDto requestDto, User user) {
+        this.username = user.getUsername();
+        this.content = requestDto.getContent();
         this.title = requestDto.getTitle();
-        this.password = requestDto.getPassword();
+        this.user = user;
     }
 
 
     public  void update(MemoRequestDto requestDto) {
-        this.username = requestDto.getUsername();
-        this.contents = requestDto.getContents();
+        this.content = requestDto.getContent();
         this.title = requestDto.getTitle();
-        this.password = requestDto.getPassword();
     }
-
 }

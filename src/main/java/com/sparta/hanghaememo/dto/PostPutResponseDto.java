@@ -1,13 +1,15 @@
 package com.sparta.hanghaememo.dto;
 
+
 import com.sparta.hanghaememo.entity.Memo;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class MemoResponseDto {
-
+@AllArgsConstructor
+public class PostPutResponseDto {
     private Long id;
     private final LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -15,7 +17,7 @@ public class MemoResponseDto {
     private String username;
     private String content;
 
-    public MemoResponseDto(Memo entity) { //?
+    public PostPutResponseDto(Memo entity) { //?
         this.id = entity.getId();
         this.createdAt = entity.getCreatedAt();
         this.modifiedAt = entity.getModifiedAt();
@@ -23,4 +25,5 @@ public class MemoResponseDto {
         this.username = entity.getUsername();
         this.content = entity.getContent();
     }
+
 }

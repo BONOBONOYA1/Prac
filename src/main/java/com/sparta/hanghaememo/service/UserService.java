@@ -4,6 +4,7 @@ import com.sparta.hanghaememo.Jwt.JwtUtil;
 import com.sparta.hanghaememo.dto.LoginRequestDto;
 import com.sparta.hanghaememo.dto.SignupRequestDto;
 import com.sparta.hanghaememo.entity.User;
+import com.sparta.hanghaememo.entity.UserRoleEnum;
 import com.sparta.hanghaememo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,9 @@ public class UserService {
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
-        User user = new User(username, password);
+        UserRoleEnum role = UserRoleEnum.USER;
+
+        User user = new User(username, password,role);
         userRepository.save(user);
     }
 

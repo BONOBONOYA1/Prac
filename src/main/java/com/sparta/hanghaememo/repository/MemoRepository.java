@@ -15,6 +15,6 @@ public interface MemoRepository extends JpaRepository<Memo, Long>{
     List<Memo> findAllByOrderByCreatedAtDesc();//수정된 시간이 가장 최근인 순서대로 가지고오게 하는 코드, Desc = 내림차순 코드
 
 
-    Optional<Memo> findByIdAndPassword(Long id, String password);
-    Boolean existsByIdAndPassword(Long id, String password);  //?
+//    Optional<Memo> findByIdAndPassword(Long id, String password);
+//    Boolean existsByIdAndPassword(Long id, String password);  //?
     }

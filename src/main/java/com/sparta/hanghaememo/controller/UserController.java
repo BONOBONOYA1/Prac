@@ -16,11 +16,11 @@ import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService; //의존성 주입
 
+    @ResponseBody
     @PostMapping("/api/auth/signup") //회원가입 구현
     public SignupResponseDto signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
         userService.signup(signupRequestDto);
@@ -29,7 +29,7 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/api/auth/login") //로그인 구현
-    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) { //@RequestBody:ajax에서 body값이 넘어가기 때문에 써줌, HttpServletResponse: HttpRequest에서 Header가 넘어와 받아오는 것처럼 우리도 Client쪽으로 반환 할 때는 이렇게 Response객체를 반환한다.
+    public LoginResponseDto login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response) { //@RequestBody:ajax에서 body값이 넘어가기 때문에 써줌, HttpServletResponse: HttpRequest에서 Header가 넘어와 받아오는 것처럼 우리도 Client쪽으로 반환 할 때는 이렇게 Response객체를 반환한다.
         userService.login(loginRequestDto, response);
         return new LoginResponseDto("로그인 성공", 200 );
     }
