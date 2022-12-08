@@ -17,7 +17,7 @@ public class PostPutResponseDto {
     private String username;
     private String content;
 
-    public PostPutResponseDto(Memo entity) { //?
+    public PostPutResponseDto(Memo entity) {
         this.id = entity.getId();
         this.createdAt = entity.getCreatedAt();
         this.modifiedAt = entity.getModifiedAt();

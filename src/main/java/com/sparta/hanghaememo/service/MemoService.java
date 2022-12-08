@@ -22,7 +22,7 @@ import java.util.List;
 @Service //Service라는 것을 알려주기 위해 작성
 @RequiredArgsConstructor //controller 자바클래스에 설명있음.
 public class MemoService {
-    private final MemoRepository memoRepository; //MemoRepository를 사용할 수 있도록 작성. MemoRepository에 연결됨.
+    private final MemoRepository memoRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
@@ -34,9 +34,9 @@ public class MemoService {
         return new MemoResponseDto(memo);
     }
 
-    //final 키워드가 붙어 있으면 값을 생성자에서 초기화 한 이후에 변경할 수 없습니다.
-    @Transactional  //Transactional의 안정성을 보장해주는 어노테이션.안정성을 보장해주는 4가지 법칙.ACID(줄임말)가 깨지지않게 해줌.
-    public MemoResponseDto createMemo(MemoRequestDto requestDto, HttpServletRequest request) { //게시글 작성 API
+    //게시글 작성 API
+    @Transactional
+    public MemoResponseDto createMemo(MemoRequestDto requestDto, HttpServletRequest request) {
         // Request에서 Token 가져오기
         String token = jwtUtil.resolveToken(request); //resolveToken:토큰을 header에서 가져온다.
         Claims claims; //JWT안에 들어있는 정보들을 담을 수 있는 객체
@@ -65,7 +65,8 @@ public class MemoService {
     }
 
 
-    @Transactional(readOnly = true) //전체 글 읽기코드
+    @Transactional(readOnly = true)
+    //전체 글 읽기코드
     public List<MemoResponseDto> getMemos() {
         List<MemoResponseDto> memoResponseDtos = new ArrayList<>();//초기화
 
@@ -73,13 +74,12 @@ public class MemoService {
             memoResponseDtos.add( new MemoResponseDto(memo) );
         };
 
-        return memoResponseDtos;         //findAll을 하면 해당 테이블에 있는 모든걸 가져와야 하니까 update를 해야된다. memoRepository요게 인터페이스 repository인가?
-                                        //memoRopository에서 findAllByOrderByModifiedAtDesc 코드 작성 후 service자바 클래스로 와서 findAll을 findAllByOrderByModifiedAtDesc로 바꿔줌
+        return memoResponseDtos;
     }
 
     @Transactional
-
-    public MemoResponseDto updateMemo(Long id, MemoRequestDto requestDto, HttpServletRequest request) { //선택한 게시글 수정 API
+    //선택한 게시글 수정 API
+    public MemoResponseDto updateMemo(Long id, MemoRequestDto requestDto, HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request); //resolveToken:토큰을 header에서 가져온다.
         Claims claims; //JWT안에 들어있는 정보들을 담을 수 있는 객체
 
@@ -96,7 +96,7 @@ public class MemoService {
                 );
                 if (username.equals(memo.getUsername())) {
                     //update 진행
-                    memo.update(requestDto); //
+                    memo.update(requestDto);
                 } else {
                     //에러 알람.
                     throw new IllegalArgumentException("아이디가 다릅니다.");
@@ -119,7 +119,8 @@ public class MemoService {
     }
 
     @Transactional
-    public MemoDeleteResponseDto deleteMemo(Long id, HttpServletRequest request) { //선택한 게시글 삭제 API
+    //선택한 게시글 삭제 API
+    public MemoDeleteResponseDto deleteMemo(Long id, HttpServletRequest request) {
         // Request에서 Token 가져오기
         String token = jwtUtil.resolveToken(request);
         Claims claims;
@@ -137,7 +138,7 @@ public class MemoService {
                         () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
                 );
                 if (username.equals(memo.getUsername())) {
-                    //update 진행
+                    //delete 진행
                     memoRepository.deleteById(id);//
                 } else {
                     //에러 알람.

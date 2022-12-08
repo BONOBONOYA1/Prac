@@ -24,12 +24,13 @@ public class UserService {
     private final JwtUtil jwtUtil;
 
     @Transactional
+    //회원가입 구현
     public void signup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
         String password = signupRequestDto.getPassword();
 
         // 회원 중복 확인
-        Optional<User> found = userRepository.findByUsername(username); //UserRepository에 구현해야함
+        Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
@@ -44,7 +45,8 @@ public class UserService {
     //- 로그인 성공 시, 로그인에 성공한 유저의 정보와 JWT를 활용하여 토큰을 발급하고,
     //발급한 토큰을 Header에 추가하고 성공했다는 메시지, 상태코드 와 함께 Client에 반환하기
 
-    @Transactional(readOnly = true) //로그인 구현 (UserController에서 넘어옴.)
+    @Transactional(readOnly = true) // (UserController에서 넘어옴.)
+    //로그인 구현
     public void login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();

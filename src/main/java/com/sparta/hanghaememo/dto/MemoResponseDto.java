@@ -15,7 +15,7 @@ public class MemoResponseDto {
     private String username;
     private String content;
 
-    public MemoResponseDto(Memo entity) { //?
+    public MemoResponseDto(Memo entity) {
         this.id = entity.getId();
         this.createdAt = entity.getCreatedAt();
         this.modifiedAt = entity.getModifiedAt();
