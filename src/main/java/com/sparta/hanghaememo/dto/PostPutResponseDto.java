@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PostPutResponseDto {
     private Long id;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private String title;
     private String username;

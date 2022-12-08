@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class MemoResponseDto {
 
     private Long id;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private String title;
     private String username;

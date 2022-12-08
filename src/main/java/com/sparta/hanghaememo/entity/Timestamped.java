@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass  // 객체의 입장에서 공통 매핑 정보가 필요할 때 사용한다.
-                                    //id, name은 객체의 입장에서 볼 때 계속 나온다.
-                                    //이렇게 공통 매핑 정보가 필요할 때, 부모 클래스에 선언하고 속성만 상속 받아서 사용하고 싶을 때 @MappedSuperclass를 사용한다.
-                                    //DB 테이블과는 상관없다. DB는 매핑 정보 다 따로 쓰고 있다. 객체의 입장이다.
+                    //id, name은 객체의 입장에서 볼 때 계속 나온다.
+                    //이렇게 공통 매핑 정보가 필요할 때, 부모 클래스에 선언하고 속성만 상속 받아서 사용하고 싶을 때 @MappedSuperclass를 사용한다.
+                    //DB 테이블과는 상관없다. DB는 매핑 정보 다 따로 쓰고 있다. 객체의 입장이다.
 
 @EntityListeners(AuditingEntityListener.class)  //EntityListeners = Entity가 삽입, 삭제 수정, 조회 등의 작업을 할 때 전, 후에 어떤 작업을 하기 위해
-                                                                            //이번트 처리를 위한 어노테이션이다.
-                                                                            //JPA Auditing을 사용하면 생성 시간과 수정 시간을 자동화 할 수 있다.
+                                                //이번트 처리를 위한 어노테이션이다.
+                                                //JPA Auditing을 사용하면 생성 시간과 수정 시간을 자동화 할 수 있다.
 public class Timestamped {
 
     @CreatedDate //데이터 저장 시 '생성된 시간 정보'

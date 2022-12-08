@@ -74,7 +74,7 @@ public class MemoService {
         };
 
         return memoResponseDtos;         //findAll을 하면 해당 테이블에 있는 모든걸 가져와야 하니까 update를 해야된다. memoRepository요게 인터페이스 repository인가?
-        //memoRopository에서 findAllByOrderByModifiedAtDesc 코드 작성 후 service자바 클래스로 와서 findAll을 findAllByOrderByModifiedAtDesc로 바꿔줌
+                                        //memoRopository에서 findAllByOrderByModifiedAtDesc 코드 작성 후 service자바 클래스로 와서 findAll을 findAllByOrderByModifiedAtDesc로 바꿔줌
     }
 
     @Transactional
